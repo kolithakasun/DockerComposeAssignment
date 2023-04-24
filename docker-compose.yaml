@@ -1,0 +1,31 @@
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+    - '80:80'
+
+  app:
+    depends_on:
+    - nginx
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: app
+    ports:
+    - '5050:5000'
+
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: db
+    env_file:
+      - .env
+    ports:
+    - '3306:3306'
+  
+version: '3'
